@@ -20,8 +20,10 @@ LOCAL_MODULE := libglgps-compat
 LOCAL_MODULE_TAGS := optional
 LOCAL_SHARED_LIBRARIES := \
 	libgui \
+	libbinder \
+	libsensor \
 	libutils
 LOCAL_C_INCLUDES += \
-	frameworks/native/include/
+	frameworks/native/libs/sensor/include
 include $(BUILD_SHARED_LIBRARY)
 

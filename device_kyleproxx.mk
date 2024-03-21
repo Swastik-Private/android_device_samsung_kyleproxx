@@ -31,9 +31,9 @@ PRODUCT_COPY_FILES += \
     device/samsung/kyleproxx/rootdir/check_variant.sh:install/bin/check_variant.sh
 
 # Insecure ADB
-ADDITIONAL_DEFAULT_PROPERTIES += \
-    ro.secure=0 \
-    ro.adb.secure=0 \
+#ADDITIONAL_DEFAULT_PROPERTIES += \
+#   ro.secure=0 \
+#   ro.adb.secure=0 \
 
 # Filesystem management tools
 PRODUCT_PACKAGES += \
@@ -42,7 +42,8 @@ PRODUCT_PACKAGES += \
     setup_fs \
     mkfs.f2fs \
     fsck.f2fs \
-    fibmap.f2fs
+    fibmap.f2fs \
+    loggy.sh
 
 # GPS/RIL
 PRODUCT_PACKAGES += \
@@ -64,6 +65,11 @@ PRODUCT_PACKAGES += \
     power.hawaii \
     libstagefrighthw
 
+#bluetooth
+PRODUCT_PACKAGES += \
+    android.hardware.bluetooth@1.0-impl \
+    libbt-vendor
+    
 # Media
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.legacyencoder=true \
@@ -76,7 +82,7 @@ PRODUCT_PACKAGES += \
 
 # Snap Camera
 PRODUCT_PACKAGES += \
-    Snap
+    Camera2
 
 # Gello Browser
 PRODUCT_PACKAGES += \
@@ -103,9 +109,56 @@ PRODUCT_PACKAGES += \
     macloader \
     hostapd \
     libnetcmdiface \
+    wificond \
     wpa_supplicant \
-    wpa_supplicant.conf
+    wpa_supplicant.conf \
+    android.hardware.wifi@1.0-service \
 
+# HIDL Hals
+PRODUCT_PACKAGES += \
+    android.hardware.graphics.allocator@2.0-impl \
+    android.hardware.graphics.mapper@2.0-impl \
+    android.hardware.graphics.composer@2.1-impl \
+    android.hardware.gnss@1.0-impl \
+    android.hardware.audio@2.0-impl \
+    android.hardware.audio.effect@2.0-impl \
+    android.hardware.keymaster@3.0-impl \
+    android.hardware.power@1.0-impl \ 
+#    android.hardware.light@2.0-impl \   
+    
+
+# Vibrator HAL
+PRODUCT_PACKAGES += \
+    android.hardware.vibrator@1.0-impl
+
+#DRM
+PRODUCT_PACKAGES += \
+    android.hardware.drm@1.0-impl
+
+#Sensors
+PRODUCT_COPY_FILES += \
+    device/samsung/kyleproxx/configs/sensors/_hals.conf:system/vendor/etc/sensors/_hals.conf
+PRODUCT_PACKAGES += \
+    android.hardware.sensors@1.0-impl \
+    sensors.hawaii
+
+# Camera HIDL interfaces
+PRODUCT_PACKAGES += \
+    camera.hawaii \
+    android.hardware.camera.provider@2.4-impl \
+    android.hardware.camera.provider@2.4-service \
+    camera.device@1.0-impl
+# Camera
+#PRODUCT_PACKAGES += \
+#	android.hardware.camera.provider@2.4-impl-legacy \
+# 	camera.device@1.0-impl-legacy 
+
+
+#Memtrack
+PRODUCT_PACKAGES += \
+    memtrack.hawaii \
+    android.hardware.memtrack@1.0-impl \
+         	       
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -166,8 +219,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Dalvik heap config
 include frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk
 
-# Texture config.
-include frameworks/native/build/phone-xxhdpi-2048-hwui-memory.mk
+# Default OMX service to non-Treble
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.media.treble_omx=false
 
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/config/config-bcm.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)

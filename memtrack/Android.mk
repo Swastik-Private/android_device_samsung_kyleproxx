@@ -1,5 +1,4 @@
-# Copyright (C) 2016 The Android Open Source Project
-# Copyright (C) 2016 The LineageOS Project
+# Copyright (C) 2017 NXP
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +13,16 @@
 # limitations under the License.
 
 LOCAL_PATH := $(call my-dir)
-
 include $(CLEAR_VARS)
-LOCAL_C_INCLUDES := system/core/healthd/include \
-    system/core/base/include
-LOCAL_SRC_FILES := healthd-hawaii.cpp
-LOCAL_MODULE := libhealthd.hawaii
+
+LOCAL_C_INCLUDES += hardware/libhardware/include
+LOCAL_CLANG  := true
+LOCAL_VENDOR_MODULE := true
+LOCAL_MODULE := memtrack.$(TARGET_BOARD_PLATFORM)
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_SRC_FILES := memtrack.c
+LOCAL_SHARED_LIBRARIES := liblog libcutils
 LOCAL_MODULE_TAGS := optional
-LOCAL_STATIC_LIBRARIES := libhealthd.default
-include $(BUILD_STATIC_LIBRARY)
+LOCAL_CFLAGS:= -DLOG_TAG=\"memtrack\"
+
+include $(BUILD_SHARED_LIBRARY)

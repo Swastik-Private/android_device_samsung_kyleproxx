@@ -15,13 +15,25 @@ ARCH_ARM_HAVE_VFP                           := true
 ARCH_ARM_HAVE_TLS_REGISTER                  := true
 ARCH_ARM_HAVE_NEON                          := true
 TARGET_BOOTLOADER_BOARD_NAME                := hawaii
-TARGET_GLOBAL_CFLAGS                        += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp -O3 -funsafe-math-optimizations
-TARGET_GLOBAL_CPPFLAGS                      += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp -O3 -funsafe-math-optimizations
+#TARGET_GLOBAL_CFLAGS                        += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp -O3 -funsafe-math-optimizations
+#TARGET_GLOBAL_CPPFLAGS                      += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp -O3 -funsafe-math-optimizations
 
 # Assert
 TARGET_OTA_ASSERT_DEVICE                    := kyleprods,kylepro,S7582,S7580,GT-S7582,GT-S7580,hawaii
 
+# Enable dex-preoptimization to speed up first boot sequence
+ifeq ($(HOST_OS),linux)
+  ifneq ($(TARGET_BUILD_VARIANT),eng)
+    ifeq ($(WITH_DEXPREOPT),)
+      WITH_DEXPREOPT := true
+    endif
+  endif
+endif
+
+WITH_DEXPREOPT_BOOT_IMG_AND_SYSTEM_SERVER_ONLY := true
+
 # Kernel
+BOARD_KERNEL_IMAGE_NAME                     := zImage
 BOARD_MKBOOTIMG_ARGS                        := --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100
 BOARD_KERNEL_BASE                           := 0x82000000
 BOARD_KERNEL_PAGESIZE                       := 4096
@@ -49,7 +61,7 @@ TARGET_KERNEL_HAVE_NTFS                     := true
 # Partition size
 BOARD_BOOTIMAGE_PARTITION_SIZE              := 8388608
 # //Fake Values to workaround build
-BOARD_RECOVERYIMAGE_PARTITION_SIZE          := 10279424
+BOARD_RECOVERYIMAGE_PARTITION_SIZE          := 20279424
 # //
 BOARD_SYSTEMIMAGE_PARTITION_SIZE            := 1200283648
 BOARD_SYSTEMIMAGE_JOURNAL_SIZE              := 0
@@ -80,7 +92,7 @@ WIFI_DRIVER_FW_PATH_PARAM                   := "/sys/module/dhd/parameters/firmw
 WIFI_DRIVER_FW_PATH_STA                     := "/system/etc/wifi/bcmdhd_sta.bin"
 WIFI_DRIVER_FW_PATH_AP                      := "/system/etc/wifi/bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_P2P                     := "/system/etc/wifi/bcmdhd_p2p.bin"
-WIFI_DRIVER_MODULE_PATH                     := "/system/lib/modules/dhd.ko"
+WIFI_DRIVER_MODULE_PATH                     := "/system/vendor/lib/modules/dhd.ko"
 WIFI_DRIVER_MODULE_NAME                     := "dhd"
 WIFI_DRIVER_MODULE_ARG                      := "firmware_path=/system/etc/wifi/bcmdhd_sta.bin nvram_path=/system/etc/wifi/nvram_net.txt"
 WIFI_DRIVER_MODULE_AP_ARG                   := "firmware_path=/system/etc/wifi/bcmdhd_apsta.bin nvram_path=/system/etc/wifi/nvram_net.txt"
@@ -166,6 +178,9 @@ TW_NO_CPU_TEMP                              := true
 BOARD_HAS_NO_REAL_SDCARD                    := true
 HAVE_SELINUX                                := true
 
+#
+TARGET_PROVIDES_CAMERA_HAL                  := true
+
 # Vold
 BOARD_UMS_LUNFILE                           := /sys/class/android_usb/f_mass_storage/lun/file
 TARGET_USE_CUSTOM_LUN_FILE_PATH             := /sys/class/android_usb/android0/f_mass_storage/lun/file
@@ -176,10 +191,14 @@ BOARD_VOLD_MAX_PARTITIONS                   := 19
 BOARD_MTP_DEVICE                            := /dev/mtp_usb
 
 # CMHW
-BOARD_HARDWARE_CLASS                        := hardware/samsung/cmhw/
+BOARD_HARDWARE_CLASS                        := hardware/samsung/lineagehw/
 
 # GPS
 TARGET_SPECIFIC_HEADER_PATH                 := device/samsung/kyleproxx/include
+
+#Manifest
+DEVICE_MANIFEST_FILE := device/samsung/kyleproxx/manifest.xml
+DEVICE_MATRIX_FILE := device/samsung/kyleproxx/compatibility_matrix.xml
 
 # SELinux
 BOARD_SEPOLICY_DIRS += \

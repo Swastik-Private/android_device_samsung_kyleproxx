@@ -6,8 +6,8 @@ persist.brcm.log=none
 persist.brcm.cp_crash=none
 persist.brcm.ap_crash=none
 
-rild.libpath=/system/lib/libbrcm_ril.so
-#rild.libargs=-d /dev/ttyS0
+rild.libpath=/system/vendor/lib/libbrcm_ril.so
+rild.libargs=-d /dev/ttyS0
 ro.sf.lcd_density=240
 ro.lcd_brightness=160
 ro.lcd_min_brightness=10

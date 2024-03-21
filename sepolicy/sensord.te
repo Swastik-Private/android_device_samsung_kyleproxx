@@ -3,3 +3,4 @@ type sensord, domain;
 type sensord_exec, file_type, exec_type;
 
 init_daemon_domain(sensord)
+allow sensord system_data_file:file { append };

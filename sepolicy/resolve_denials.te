@@ -1,0 +1,9 @@
+allow mediaprovider rootfs:dir { write };
+allow vold rootfs:file { create };
+allow platform_app rootfs:dir { write };
+allow platform_app rootfs:dir { add_name };
+allow mediaextractor vfat:file { read };
+allow priv_app rootfs:dir { write };
+allow priv_app rootfs:file { create };
+allow priv_app rootfs:dir { remove_name };
+allow priv_app rootfs:file { append };

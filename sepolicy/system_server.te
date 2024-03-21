@@ -18,3 +18,6 @@ allow system_server self:capability sys_module;
 
 # Not sure why
 allow system_server efs_file:dir search;
+
+#######FUCK SELINUX
+allow system_server unlabeled:file { unlink };

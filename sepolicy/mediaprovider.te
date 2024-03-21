@@ -1,0 +1,2 @@
+allow mediaprovider rootfs:dir { write };
+allow mediaprovider rootfs:dir { add_name };

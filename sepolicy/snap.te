@@ -1,0 +1,3 @@
+allow snap_app rootfs:dir { write };
+allow snap_app rootfs:dir { add_name };
+allow snap_app rootfs:dir { create };

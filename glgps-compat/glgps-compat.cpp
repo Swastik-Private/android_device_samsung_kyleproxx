@@ -15,7 +15,7 @@
  */
 
 #include <stdlib.h>
-#include <gui/SensorManager.h>
+#include <sensor/SensorManager.h>
 
 namespace android {
 extern "C" {

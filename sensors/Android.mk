@@ -1,5 +1,5 @@
-# Copyright (C) 2016 The Android Open Source Project
-# Copyright (C) 2016 The LineageOS Project
+#
+# Copyright (C) 2013 The Android Open-Source Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,14 +12,31 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
 
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_C_INCLUDES := system/core/healthd/include \
-    system/core/base/include
-LOCAL_SRC_FILES := healthd-hawaii.cpp
-LOCAL_MODULE := libhealthd.hawaii
-LOCAL_MODULE_TAGS := optional
-LOCAL_STATIC_LIBRARIES := libhealthd.default
-include $(BUILD_STATIC_LIBRARY)
+
+LOCAL_MODULE := sensors.hawaii
+
+LOCAL_MODULE_RELATIVE_PATH := hw
+LOCAL_PROPRIETARY_MODULE := true
+
+LOCAL_CFLAGS := -DLOG_TAG=\"MultiHal\"
+
+LOCAL_SRC_FILES := \
+    multihal.cpp \
+    SensorEventQueue.cpp \
+
+LOCAL_SHARED_LIBRARIES := \
+    libcutils \
+    libdl \
+    liblog \
+    libutils \
+
+LOCAL_STRIP_MODULE := false
+
+include $(BUILD_SHARED_LIBRARY)
+
+include $(call all-makefiles-under, $(LOCAL_PATH))
